@@ -19,7 +19,7 @@ async function chatTxt() {
          "body": JSON.stringify({
           "model": "gpt-3.5-turbo",
          "stream": stream,    // true or false
-       "messages": ousyuu.slice(ousyuu.length-10) // ‰ß‹‚X”­Œ¾‚ğˆê‚É’ñ¦‚·‚éi‰ï˜bƒ‚[ƒhj
+       "messages": ousyuu.slice(ousyuu.length-10) // éå»ï¼™ç™ºè¨€ã‚’ä¸€ç·’ã«æç¤ºã™ã‚‹ï¼ˆä¼šè©±ãƒ¢ãƒ¼ãƒ‰ï¼‰
       })
   }
   let resp = await fetch(URL, requestOptions);
@@ -27,19 +27,19 @@ async function chatTxt() {
   else {
       console.log("Stream mode");
       answer = obj.document.getElementById('ans2').innerHTML;
-      // ReadableStream ‚Æ‚µ‚Äg—p
+      // ReadableStream ã¨ã—ã¦ä½¿ç”¨
       const reader = resp.body?.getReader();
       if (resp.status !== 200 || !reader) return "error";
       const decoder = new TextDecoder('utf-8');
       try {
-         // ‚±‚Ì read ‚ÅÄ‹N“I‚ÉƒƒbƒZ[ƒW‚ğ‘Ò‹@‚µ‚Äæ“¾
+         // ã“ã® read ã§å†èµ·çš„ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å¾…æ©Ÿã—ã¦å–å¾—
 	 const read = async () => {
 		const { done, value } = await reader.read();
 		if (done) return reader.releaseLock();
 
 		const chunk = decoder.decode(value, { stream: true });
 		const jsons = chunk
-		        // •¡”Ši”[‚³‚ê‚Ä‚¢‚é‚±‚Æ‚à‚ ‚é‚½‚ß split ‚·‚é
+		        // è¤‡æ•°æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚‚ã‚ã‚‹ãŸã‚ split ã™ã‚‹
 			.split('data:')
 			.map((data) => {
 			    const trimData = data.trim();
@@ -61,17 +61,18 @@ async function chatTxt() {
       } catch (e) {
 	  console.error(e);
       }
-      // ReadableStream ‚ğÅŒã‚Í‰ğ•ú‚·‚é
+      // ReadableStream ã‚’æœ€å¾Œã¯è§£æ”¾ã™ã‚‹
       reader.releaseLock();
       answer = obj.document.getElementById('ans2').innerHTML;
   }
   let htmlans = answer.replace(/\r?\n/g,"<br>").replace(/<br><br>/g,"<br>")+"<br><br>";
-  if (converse) {  // ‰ï˜b‚Ì”­Œ¾‹L˜^‚Í‚Pƒg[ƒN‚Q’i—‚Ü‚Å
+  if (converse) {  // ä¼šè©±ã®ç™ºè¨€è¨˜éŒ²ã¯ï¼‘ãƒˆãƒ¼ã‚¯ï¼’æ®µè½ã¾ã§
       let secpos = htmlans.indexOf('<br>');
       secpos += htmlans.slice(secpos).indexOf('<br>');
       ousyuu.push({"role": "assistant", "content": htmlans.slice(0,secpos)});
   }
-  obj.document.getElementById('ans1').innerHTML += "<br>"+htmlans;
+  obj.document.getElementById('ans1').innerHTML += 
+ã€€ã€€ã€€ã€€ã€€ã€€ã€€(htmlans.slice(0,4)=="<br>"?"":"<br>")+htmlans;
   obj.document.getElementById('ans2').scrollIntoView(false);
   obj.document.getElementById('ans2').innerHTML = "";
 }
