@@ -68,7 +68,7 @@ async function chatTxt() {
   let htmlans = answer.replace(/\r?\n/g,"<br>").replace(/<br><br>/g,"<br>")+"<br><br>";
   if (converse) {  // 会話の発言記録は１トーク２段落まで
       let secpos = htmlans.indexOf('<br>');
-      secpos += htmlans.slice(secpos).indexOf('<br>');
+      secpos += htmlans.slice(secpos+4).indexOf('<br>');
       ousyuu.push({"role": "assistant", "content": htmlans.slice(0,secpos)});
   }
   obj.document.getElementById('ans1').innerHTML += 
