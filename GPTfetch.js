@@ -69,7 +69,7 @@ async function chatTxt() {
   if (converse) {  // 会話の発言記録は１トーク２段落まで
       let secpos = htmlans.indexOf('<br>');
       secpos += htmlans.slice(secpos+4).indexOf('<br>');
-      ousyuu.push({"role": "assistant", "content": htmlans.slice(0,secpos)});
+      ousyuu.push({"role": "assistant", "content": htmlans.slice(0,secpos+4)});
   }
   obj.document.getElementById('ans1').innerHTML += 
 　　　　　　　(htmlans.slice(0,4)=="<br>"?"":"<br>")+htmlans;
