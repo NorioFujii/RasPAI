@@ -1,4 +1,7 @@
 var obj=GPTwin, response, answer, ousyuu = [];
+function rtrim(str) {
+	return (str.lastIndexOf(' ')<0)? str : rtrim(str.substr(0,str.lastIndexOf(' ')));
+}
 async function chatTxt() {
 	let text = rtrim(document.getElementById('sentence').value);
 	if (text=='') return false;
