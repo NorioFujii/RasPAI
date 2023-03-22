@@ -72,7 +72,7 @@ async function chatTxt() {
       ousyuu.push({"role": "assistant", "content": htmlans.slice(0,secpos+4)});
   }
   obj.document.getElementById('ans1').innerHTML += 
-　　　　　　　(htmlans.slice(0,4)=="<br>"?"":"<br>")+htmlans;
+　        (htmlans.slice(0,4)=="<br>"?"":"<br>")+htmlans;
   obj.document.getElementById('ans2').scrollIntoView(false);
   obj.document.getElementById('ans2').innerHTML = "";
 }
