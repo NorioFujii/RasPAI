@@ -12,6 +12,8 @@ async function chatTxt() {
         obj.document.getElementById('ans1').innerHTML += '<font color=green>'+text+'</font>';
         if (!converse) ousyuu = [];
         ousyuu.push({"role": "user", "content": text});
+        OPENAI_API_KEY = "Bearer "+document.getElementById('account').value;
+        if (OPENAI_API_KEY.length<30) alert("API Key is needed.");
 
   const requestOptions = {
        "method": "POST",
