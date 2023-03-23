@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--
 //------------------------------------------------
 //  Test bench for ChatGPT stream mode
@@ -51,9 +52,9 @@ function initSettings() {
            "<head><title>テスト</title></head>\n<body><div id='ans1'></div><div id='ans2'></div></body>";
         obj = GPTwin;
 }
-async function mouseon() {
-  if ((!fStop)&& (document.getElementById('sentence').value=="")) {
-    let paste = (await navigator.clipboard.readText()
+async function mouseon(paste="") {
+  if ((!fStop)&& (ousyuu.length==0)) {  // 再起動時
+    paste = (await navigator.clipboard.readText()
       .then((text) => {
         console.log(text);
         return (text);
@@ -61,6 +62,9 @@ async function mouseon() {
       .catch(err => {
         return ("");
       }));
+  } else if (document.getElementById('Conver').checked)
+            paste = ousyuu[ousyuu.length-2]["content"];
+    else    paste = ousyuu[ousyuu.length-1]["content"];
     document.getElementById('sentence').value = paste; 
   }
   freeze(200);
@@ -81,8 +85,6 @@ function rubyclose() {  // 話題消滅
 	if (obj) obj.document.getElementById('ans1').innerHTML = "";
         ousyuu = [];
 }
-
-
 </script>
 <script src="GPTfetch.js" type="text/javascript" language="javascript"></script>
 </head>
@@ -99,7 +101,11 @@ function rubyclose() {  // 話題消滅
 			src="images/ltr-stocks_search.png" class="search_icn3" />
 	 </td>
      </tr><tr>
-          <td class="searchText_opt3"><input type="checkbox" id="Stream" checked />:Streamモードで表示　<input type="checkbox" id="Conver" />:会話モード（課金👇）　<input type="button" value="Ｘ" class="fin3" onclick="rubyclose();" />:話題忘却<br>　　　　　　　　　　　　　　　<a href="https://auto-worker.com/blog/?p=6988#toc_id_5" target="_BLANK">Your API Key</a>：<input type="password" autocomplete="new-password" id="account" size=40 />
+          <td class="searchText_opt3"><input type="checkbox" id="Stream" checked />:Streamモードで表示
+		  <input type="checkbox" id="Conver" />:会話モード（課金👇）
+		  <input type="button" value="Ｘ" class="fin3" onclick="rubyclose();" />:話題忘却<br>
+		  <a href="https://auto-worker.com/blog/?p=6988#toc_id_5" target="_BLANK">
+			  Your API Key</a>：<input type="password" autocomplete="new-password" id="account" size=40 />
           </td>
      </tr>
  </table><br>
