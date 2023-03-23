@@ -28,6 +28,7 @@ async function chatTxt() {
       })
   }
   let resp = await fetch(URL, requestOptions);
+  if (resp.status !== 200) return console.log("error",resp.status);
   if (!stream) answer = (await resp.json())["choices"][0]["message"]["content"].trim();  // stream=false
   else {
       console.log("Stream mode");
