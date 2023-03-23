@@ -16,6 +16,7 @@ async function chatTxt() {
         if (OPENAI_API_KEY.length<30) alert("API Key is needed.");
 
   const requestOptions = {
+           mode: "cors",
        "method": "POST",
       "headers": {
           "Content-Type": "application/json",
