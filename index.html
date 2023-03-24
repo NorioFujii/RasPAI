@@ -49,7 +49,7 @@ var fStop,GPTwin, OPENAI_API_KEY, defkey;
 function initSettings() {
         GPTwin = window.open( "", "samep", "width=700,height=400,scrollbars=yes,resizable=yes" ); // iframe window
         GPTwin.document.documentElement.innerHTML =
-           "<head><title>test</title></head>\n<body><div id='ans1'></div><div id='ans2'></div></body>";
+           "<head><title>test</title></head>\n<body bgcolor=white><div id='ans1'></div><div id='ans2'></div></body>";
         defkey=window.atob('QmVhcmVyIHNrLUVLQWNmN04zOUU2TXdkeDFKbVljVDNCbGJrRkpvTENMaDV2eWFWUjNrYzVhM0dZUA==').slice(7);
         obj = GPTwin;
 }
