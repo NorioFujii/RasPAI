@@ -1,4 +1,4 @@
-var obj=GPTwin, response, answer, ousyuu = [];
+var obj=GPTwin, model="gpt-3.5-turbo",mmdd="0513",response, answer, ousyuu = [];
 function rtrim(str) {
 	return (str.lastIndexOf(' ')<0)? str : rtrim(str.substr(0,str.lastIndexOf(' ')));
 }
@@ -21,32 +21,35 @@ async function chatTxt() {
       "headers": {
           "Content-Type": "application/json",
          "Authorization": OPENAI_API_KEY
-      },
+                 },
          "body": JSON.stringify({
-          "model": "gpt-3.5-turbo",
+          "model": model,
          "stream": stream,    // true or false
-       "messages": ousyuu.slice(ousyuu.length-10) // éå»ï¼™ç™ºè¨€ã‚’ä¸€ç·’ã«æç¤ºã™ã‚‹ï¼ˆä¼šè©±ãƒ¢ãƒ¼ãƒ‰ï¼‰
+       "messages": ousyuu.slice(ousyuu.length-10) // ‰ß‹‚X”­Œ¾‚ğˆê‚É’ñ¦‚·‚éi‰ï˜bƒ‚[ƒhj
       })
   }
   let resp = await fetch(URL, requestOptions);
   if (resp.status !== 200) answer = "error:"+resp.status;
-  else if (!stream) answer = (await resp.json())["choices"][0]["message"]["content"].trim();  // stream=false
+  else if (!stream) {
+      answer = (await resp.json());
+      console.log("answer=",answer);
+      answer = answer["choices"][0]["message"]["content"].trim(); } // stream=false
   else {
       console.log("Stream mode");
       answer = obj.document.getElementById('ans2').innerHTML;
-      // ReadableStream ã¨ã—ã¦ä½¿ç”¨
+      // ReadableStream ‚Æ‚µ‚Äg—p
       const reader = resp.body?.getReader();
-      if (resp.status !== 200 || !reader) return "error";
+      if (!reader) return "error";
       const decoder = new TextDecoder('utf-8');
       try {
-         // ã“ã® read ã§å†èµ·çš„ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å¾…æ©Ÿã—ã¦å–å¾—
+         // ‚±‚Ì read ‚ÅÄ‹N“I‚ÉƒƒbƒZ[ƒW‚ğ‘Ò‹@‚µ‚Äæ“¾
 	 const read = async () => {
 		const { done, value } = await reader.read();
 		if (done) return reader.releaseLock();
 
 		const chunk = decoder.decode(value, { stream: true });
 		const jsons = chunk
-		        // è¤‡æ•°æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚‚ã‚ã‚‹ãŸã‚ split ã™ã‚‹
+		        // •¡”Ši”[‚³‚ê‚Ä‚¢‚é‚±‚Æ‚à‚ ‚é‚½‚ß split ‚·‚é
 			.split('data:')
 			.map((data) => {
 			    const trimData = data.trim();
@@ -68,18 +71,18 @@ async function chatTxt() {
       } catch (e) {
 	  console.error(e);
       }
-      // ReadableStream ã‚’æœ€å¾Œã¯è§£æ”¾ã™ã‚‹
+      // ReadableStream ‚ğÅŒã‚Í‰ğ•ú‚·‚é
       reader.releaseLock();
       answer = obj.document.getElementById('ans2').innerHTML;
   }
   let htmlans = answer.replace(/\r?\n/g,"<br>").replace(/<br><br>/g,"<br>")+"<br><br>";
-  if (converse) {  // ä¼šè©±ã®ç™ºè¨€è¨˜éŒ²ã¯ï¼‘ãƒˆãƒ¼ã‚¯ï¼’æ®µè½ã¾ã§
+  if (converse) {  // ‰ï˜b‚Ì”­Œ¾‹L˜^‚Í‚Pƒg[ƒN‚Q’i—‚Ü‚Å
       let secpos = htmlans.indexOf('<br>');
       secpos += htmlans.slice(secpos+4).indexOf('<br>');
       ousyuu.push({"role": "assistant", "content": htmlans.slice(0,secpos+4)});
   }
   obj.document.getElementById('ans1').innerHTML += 
-ã€€        (htmlans.slice(0,4)=="<br>"?"":"<br>")+htmlans;
+        (htmlans.slice(0,4)=="<br>"?"":"<br>")+htmlans;
   obj.document.getElementById('ans2').scrollIntoView(false);
   obj.document.getElementById('ans2').innerHTML = "";
 }
